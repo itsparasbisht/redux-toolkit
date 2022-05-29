@@ -9,11 +9,16 @@ const initialState = {
   isLoading: true,
 };
 
-export const getCartItems = createAsyncThunk("cart/getCartItems", () => {
-  return fetch(url)
-    .then((res) => res.json())
-    .catch((err) => console.log(err));
-});
+export const getCartItems = createAsyncThunk(
+  "cart/getCartItems",
+  (obj, thunkAPI) => {
+    // console.log(">>>", obj);
+    // console.log(thunkAPI);
+    return fetch(url)
+      .then((res) => res.json())
+      .catch((err) => thunkAPI.rejectWithValue(err.response));
+  }
+);
 
 const cartSlice = createSlice({
   name: "cart",
@@ -53,7 +58,8 @@ const cartSlice = createSlice({
       state.cartItems = action.payload;
       state.isLoading = false;
     },
-    [getCartItems.rejected]: (state) => {
+    [getCartItems.rejected]: (state, action) => {
+      console.log(action);
       state.isLoading = false;
     },
   },

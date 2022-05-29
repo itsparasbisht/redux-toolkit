@@ -15,7 +15,10 @@ function App() {
   }, [cartItems]);
 
   useEffect(() => {
-    dispatch(getCartItems());
+    const user = {
+      name: "harry",
+    };
+    dispatch(getCartItems(user));
   }, []);
 
   if (isLoading) {
